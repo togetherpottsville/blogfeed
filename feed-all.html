@@ -294,6 +294,7 @@
         const pagePosts = filtered.slice(start, start + PAGE_SIZE);
         document.getElementById('post-list').innerHTML = pagePosts.map(p => buildCardHtml(p)).join('');
         renderPagination(total);
+        sendHeight();
       }
 
       function buildCardHtml(p) {
@@ -339,7 +340,15 @@
         renderPage();
       }
 
-      renderPage();
+      function sendHeight() {
+        const h = document.body.scrollHeight;
+        window.parent.postMessage({ type: 'resize', height: h }, '*');
+        try { window.top.postMessage({ type: 'resize', height: h }, '*'); } catch(e) {}
+      }
+
+      window.addEventListener('load', function() { renderPage(); sendHeight(); });
+      window.addEventListener('resize', sendHeight);
+
     </script>
 
 </body>
