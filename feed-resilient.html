@@ -248,6 +248,15 @@
   </div>
 
   
+    <script>
+      function sendHeight() {
+        const h = document.body.scrollHeight;
+        window.parent.postMessage({ type: 'resize', height: h }, '*');
+        try { window.top.postMessage({ type: 'resize', height: h }, '*'); } catch(e) {}
+      }
+      window.addEventListener('load', sendHeight);
+      window.addEventListener('resize', sendHeight);
+    </script>
 
 </body>
 </html>
