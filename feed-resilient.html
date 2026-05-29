@@ -205,6 +205,14 @@
     /* ---- Mobile ---- */
     @media (max-width: 600px) {
 
+      body {
+        font-size: 1.2rem;
+      }
+
+      .chip {
+        font-size: 1.2rem;
+      }
+
       .post-list .post {
         flex-direction: column;
         gap: 10px;
@@ -215,6 +223,16 @@
         width: 100%;
         min-width: 100%;
         height: 200px;
+      }
+
+      .post-title {
+        font-size: 1.7rem;
+      }
+
+      .post-date,
+      .post-category,
+      .post-read {
+        font-size: 1.2rem;
       }
 
       .post-grid {
@@ -250,14 +268,16 @@
   
     <script>
       function sendHeight() {
-        const h = document.body.scrollHeight;
-        window.parent.postMessage({ type: 'resize', height: h }, '*');
-        try { window.top.postMessage({ type: 'resize', height: h }, '*'); } catch(e) {}
+        const h = document.documentElement.scrollHeight;
+        const msg = { type: 'resize', height: h };
+        try { window.parent.postMessage(msg, '*'); } catch(e) {}
+        try { window.top.postMessage(msg, '*'); } catch(e) {}
+        try { parent.postMessage(msg, '*'); } catch(e) {}
       }
       window.addEventListener('load', sendHeight);
       window.addEventListener('resize', sendHeight);
       const obs = new MutationObserver(sendHeight);
-      obs.observe(document.body, { childList: true, subtree: true });
+      obs.observe(document.body, { childList: true, subtree: true, attributes: true });
     </script>
 
 </body>
